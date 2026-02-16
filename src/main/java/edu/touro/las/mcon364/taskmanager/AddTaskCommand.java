@@ -1,14 +1,9 @@
 package edu.touro.las.mcon364.taskmanager;
 
-public class AddTaskCommand implements Command {
-    private final TaskRegistry registry;
-    private final Task task;
+public record AddTaskCommand(TaskRegistry registry, Task task) implements Command {
 
-    public AddTaskCommand(TaskRegistry registry, Task task) {
-        this.registry = registry;
-        this.task = task;
-    }
 
+    @Override
     public void execute() {
         registry.add(task);
     }
