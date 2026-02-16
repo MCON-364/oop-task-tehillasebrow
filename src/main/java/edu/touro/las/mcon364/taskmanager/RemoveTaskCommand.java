@@ -1,6 +1,6 @@
 package edu.touro.las.mcon364.taskmanager;
 
-public class RemoveTaskCommand implements Command {
+public non-sealed class RemoveTaskCommand implements Command {
     private final TaskRegistry registry;
     private final String name;
 
