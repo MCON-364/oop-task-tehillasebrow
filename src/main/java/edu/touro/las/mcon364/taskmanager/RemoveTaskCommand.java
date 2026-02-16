@@ -1,14 +1,8 @@
 package edu.touro.las.mcon364.taskmanager;
 
-public non-sealed class RemoveTaskCommand implements Command {
-    private final TaskRegistry registry;
-    private final String name;
+public record RemoveTaskCommand(TaskRegistry registry, String name) implements Command {
 
-    public RemoveTaskCommand(TaskRegistry registry, String name) {
-        this.registry = registry;
-        this.name = name;
-    }
-
+@Override
     public void execute() {
         registry.remove(name);
     }

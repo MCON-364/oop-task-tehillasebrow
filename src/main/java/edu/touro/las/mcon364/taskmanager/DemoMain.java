@@ -1,5 +1,9 @@
 package edu.touro.las.mcon364.taskmanager;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 public class DemoMain {
     private final TaskRegistry registry;
     private final TaskManager manager;
@@ -40,12 +44,9 @@ public class DemoMain {
 
     private void demonstrateRetrievingTask() {
         System.out.println("\n2. Retrieving a specific task...");
-        Task retrieved = registry.get("Fix critical bug");
-        if (retrieved != null) {
+       Task retrieved = registry.get("Fix critical bug").orElseThrow(() -> new TaskNotFoundException("Fix critical bug"));
             System.out.println("   Found: " + retrieved.name() + " (Priority: " + retrieved.priority() + ")");
-        } else {
-            System.out.println("   Task not found");
-        }
+
     }
 
     private void demonstrateUpdatingTask() {
@@ -67,11 +68,16 @@ public class DemoMain {
         System.out.println("   Removed 'Update dependencies'");
         displayAllTasks();
     }
-
+    private void demonstrateChangeTaskPriority() {
+        System.out.println("\n5. Changing a task...");
+        manager.run(new ChangeTaskPriorityToLow(registry, "Update dependencies"));
+        System.out.println("Changed the task to low");
+        displayAllTasks();
+    }
     private void demonstrateNullReturn() {
         System.out.println("\n6. Attempting to retrieve non-existent task...");
-        Task missing = registry.get("Non-existent task");
-        if (missing == null) {
+        Optional<Task> missing = registry.get("Non-existent task");
+        if (missing.isEmpty()) {
             System.out.println("   Returned null - this should be refactored to use Optional!");
         }
     }
