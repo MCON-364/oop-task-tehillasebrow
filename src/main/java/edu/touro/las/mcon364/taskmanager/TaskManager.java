@@ -1,24 +1,28 @@
 package edu.touro.las.mcon364.taskmanager;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 public class TaskManager {
 
-    private final TaskRegistry registry;
-
     public TaskManager(TaskRegistry registry) {
-        this.registry = registry;
-    }
+           }
 
     // TODO: Students must refactor this using pattern-matching switch
     // Current implementation uses old-style instanceof checks
     public void run(Command command) {
-        if (command instanceof AddTaskCommand) {
+        switch (command){
+            case AddTaskCommand c->
             command.execute();
-        } else if (command instanceof RemoveTaskCommand) {
+            case  RemoveTaskCommand c->
             command.execute();
-        } else if (command instanceof UpdateTaskCommand) {
+       case UpdateTaskCommand c->
             command.execute();
-        } else {
-            throw new IllegalArgumentException("Unknown command type");
+            default ->
+            throw new CommandNotFoundException(command);
         }
     }
+
 }

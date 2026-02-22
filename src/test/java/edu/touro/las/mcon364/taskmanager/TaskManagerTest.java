@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -39,7 +41,7 @@ class TaskManagerTest {
 
         manager.run(command);
 
-        assertNull(registry.get("Remove me"), "Task should be removed");
+        assertEquals(registry.get("Remove me"), Optional.empty());
     }
 
     @Test
@@ -50,7 +52,7 @@ class TaskManagerTest {
 
         manager.run(command);
 
-        assertEquals(Priority.HIGH, registry.get("Update me").getPriority(),
+        assertEquals(Priority.HIGH, registry.get("Update me").orElseThrow().priority(),
                 "Task priority should be updated");
     }
 
@@ -62,9 +64,9 @@ class TaskManagerTest {
         manager.run(new UpdateTaskCommand(registry, "Task 2", Priority.MEDIUM));
         manager.run(new RemoveTaskCommand(registry, "Task 1"));
 
-        assertNull(registry.get("Task 1"), "Task 1 should be removed");
+        assertEquals(registry.get("Task 1"), Optional.empty());
         assertNotNull(registry.get("Task 2"), "Task 2 should still exist");
-        assertEquals(Priority.MEDIUM, registry.get("Task 2").getPriority(),
+        assertEquals(Priority.MEDIUM, registry.get("Task 2").orElseThrow().priority(),
                 "Task 2 priority should be updated");
     }
 
