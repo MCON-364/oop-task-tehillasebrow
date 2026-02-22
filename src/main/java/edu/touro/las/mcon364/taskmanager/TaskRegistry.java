@@ -20,6 +20,26 @@ public class TaskRegistry {
     public Map<String, Task> getAll() {
         return tasks;
     }
+    public Map<Priority,List<Task>> getTasksByPriority() {
+        List<Task> low= new ArrayList<>();
+        List<Task> med=new ArrayList<>();
+        List<Task> high=new ArrayList<>();
+        Map<Priority,List<Task>>priorityListMap =new HashMap<>();
+        for(String key :tasks.keySet()){
+          Task t=  tasks.get(key);
+          Priority priority= t.priority();
+          switch (priority){
+              case LOW -> low.add(t);
+              case MEDIUM -> med.add(t);
+              case HIGH -> high.add(t);
+              default -> throw new PriorityNotFoundException(priority);
+          }
+        }
+        priorityListMap.put(Priority.LOW,low);
+        priorityListMap.put(Priority.MEDIUM,med);
+        priorityListMap.put(Priority.HIGH,high);
+        return priorityListMap;
+    }
 
 
 }

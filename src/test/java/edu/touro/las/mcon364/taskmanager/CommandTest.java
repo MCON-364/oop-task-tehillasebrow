@@ -29,7 +29,7 @@ class CommandTest {
         command.execute();
 
         assertNotNull(registry.get("New task"), "Task should be in registry after AddTaskCommand");
-        assertEquals(task, registry.get("New task"), "Added task should match");
+        assertEquals(Optional.of(task), registry.get("New task"), "Added task should match");
     }
 
     @Test
@@ -53,7 +53,7 @@ class CommandTest {
         Command command = new RemoveTaskCommand(registry, "To be removed");
         command.execute();
 
-        assertNull(registry.get("To be removed"), "Task should be removed from registry");
+        assertEquals(registry.get("To be removed"), Optional.empty());
     }
 
     @Test
@@ -90,19 +90,7 @@ class CommandTest {
         assertEquals("Important task", updated.name(), "Task name should be preserved");
     }
 
-    @Test
-    @DisplayName("UpdateTaskCommand on non-existent task should not throw (pre-refactor)")
-    void testUpdateTaskCommandNonExistent() {
-        Command command = new UpdateTaskCommand(registry, "Non-existent", Priority.HIGH);
 
-        // Pre-refactor: this should not throw, just print a warning
-        assertDoesNotThrow(command::execute,
-                "Updating non-existent task should not throw (before custom exception refactoring)");
-
-        // Task should not be created
-        assertNull(registry.get("Non-existent"),
-                "Non-existent task should not be created by update");
-    }
 
     @Test
     @DisplayName("UpdateTaskCommand should allow changing priority from HIGH to LOW")
